@@ -2,7 +2,7 @@
 	<div class="pt-3">
 		<template>
 			{{ errors }}
-			<v-row align="center pt-2">
+			<v-row class="pt-2" align="center">
 				<v-form
 						ref="form"
 						v-model="valid"
@@ -68,6 +68,7 @@
 
 <script>
     export default {
+		middleware: 'guest',
         data: () => ({
             valid: true,
             name: 'den55',
@@ -90,7 +91,6 @@
             checkbox: false,
             lazy: false,
         }),
-
         methods: {
             validate () {
                 if (this.$refs.form.validate()) {

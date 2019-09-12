@@ -21,6 +21,7 @@ Route::group(['prefix' => '/auth', ['middleware' => 'throttle:20,5']], function(
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::get('/me','MeController@index');
     Route::get('/auth/logout','MeController@logout');
+    Route::get('/auth/test','TestController@index');
 });
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

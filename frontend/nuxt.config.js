@@ -30,6 +30,7 @@ module.exports = {
     */
     plugins: [
     	'plugins/mixins/validation',
+		'plugins/mixins/user',
 		'plugins/axios'
 	],
     /*

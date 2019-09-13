@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'http://laravel-auth/api/articles',
+        'http://laravel-auth/api/user'
     ];
 }

@@ -97,6 +97,7 @@ module.exports = {
     ** Build configuration
     */
     build: {
+    	standalone: true,
         /*
         ** You can extend webpack config here
         */

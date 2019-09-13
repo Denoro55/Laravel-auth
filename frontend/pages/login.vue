@@ -72,7 +72,6 @@
 				'Item 3',
 				'Item 4',
 			],
-
 			lazy: false,
 		}),
 		methods: {

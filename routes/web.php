@@ -16,5 +16,9 @@ Route::get('/', function () {
 });
 
 //Auth::routes();
-//
-//Route::get('/home', 'HomeController@index')->name('home');
+
+Route::post('/api/user', 'api\UserController@index')->name('user.index');
+
+Route::post('/api/articles', 'api\ArticleController@index')->name('articles.index');
+
+//Route::post('/api/articles/create', 'api\ArticleController@store')->name('articles.store');

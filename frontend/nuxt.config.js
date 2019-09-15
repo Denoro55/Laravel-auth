@@ -31,7 +31,8 @@ module.exports = {
     plugins: [
     	'plugins/mixins/validation',
 		'plugins/mixins/user',
-		'plugins/axios'
+		'plugins/axios',
+		{ src: '@/plugins/socket', ssr: false }
 	],
     /*
     ** Nuxt.js dev-modules

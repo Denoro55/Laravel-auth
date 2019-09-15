@@ -7,3 +7,9 @@ export const mutations = {
 		state.counter++
 	}
 };
+
+export const actions = {
+	SOCKET_newMessage(ctx, data) {
+		console.log('message received', data);
+	}
+}

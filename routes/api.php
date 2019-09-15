@@ -25,6 +25,8 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 
     Route::post('/articles/store','ArticleController@store');
     Route::post('/articles/remove', 'ArticleController@remove');
+
+    Route::post('/comments/store','CommentController@store');
 });
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

@@ -134,7 +134,7 @@
 					{
 						icon: 'mdi-comment-processing-outline',
 						title: 'Chatroom',
-						to: '/inspire'
+						to: '/chatroom'
 					}
 				],
 				miniVariant: false,

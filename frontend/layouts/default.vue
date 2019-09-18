@@ -1,5 +1,17 @@
 <template>
 	<v-app dark>
+		<v-snackbar
+				v-model="snackbar"
+				bottom
+		>
+			{{ message }}
+			<v-btn
+					color="pink"
+					@click="snackbar = false"
+			>
+				Close
+			</v-btn>
+		</v-snackbar>
 		<v-navigation-drawer
 				v-model="drawer"
 				:mini-variant="miniVariant"
@@ -110,6 +122,8 @@
 				clipped: false,
 				drawer: false,
 				fixed: false,
+				message: '',
+				snackbar: false,
 				items: [
 					{
 						icon: 'mdi-account-circle',
@@ -134,7 +148,7 @@
 					{
 						icon: 'mdi-comment-processing-outline',
 						title: 'Chatroom',
-						to: '/chatroom'
+						to: '/chat'
 					}
 				],
 				miniVariant: false,
@@ -147,13 +161,27 @@
 			logout() {
 				this.$auth.logout();
 			}
+		},
+		mounted() {
+			const {message} = this.$route.query;
+			if (message === 'noUser') {
+				this.message = 'Fill the data please';
+			} else if (message === 'userLeft') {
+				this.message = 'You have left the chat';
+			}
+			this.snackbar = !!this.message;
 		}
 	}
 </script>
 
 <style lang="scss">
+	.container {
+		position: relative;
+	}
+
 	.content {
 		padding-top: 12px;
+		height: 100%;
 	}
 
 	.avatar {
@@ -174,4 +202,12 @@
 			font-size: 20px;
 		}
 	}
+
+	::-webkit-scrollbar {width: 12px;height: 12px;}
+	::-webkit-scrollbar-track-piece {background:rgba(0,0,0,0);}
+	::-webkit-scrollbar-thumb:vertical {height:10px;background: #272c35;}
+	::-webkit-scrollbar-thumb:vertical:hover {background: #71CA55;}
+	::-webkit-scrollbar-thumb:horizontal {width:10px;background: #272c35;}
+	::-webkit-scrollbar-thumb:horizontal:hover {background: #71CA55;}
+
 </style>

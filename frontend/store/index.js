@@ -1,15 +1,22 @@
 export const state = () => ({
-	counter: 0
+	chatUser: {},
+	messages: [],
+	users: []
 });
 
 export const mutations = {
-	increment (state) {
-		state.counter++
+	setUser(state, user) {
+		state.chatUser = user;
+	},
+	clearData(state, user) {
+		state.chatUser = {};
+		state.messages = [];
+		state.users = [];
+	},
+	SOCKET_newMessage(state, msg) {
+		state.messages.push(msg);
+	},
+	SOCKET_updateUsers(state, users) {
+		state.users = users;
 	}
 };
-
-export const actions = {
-	SOCKET_newMessage(ctx, data) {
-		console.log('message received', data);
-	}
-}

@@ -7,7 +7,12 @@
 			<div class="room__messager mb-5">
 				<div class="messager mb-2">
 					<div class="messager__list" ref="messager">
-						<Message v-for="m in messages" :key="m.id" :name="m.name" :owner="m.d_id === chatUser.id" :text="m.text" />
+						<Message v-for="m in messages"
+						         :key="m.id"
+						         :name="m.name"
+						         :avatar="m.avatar"
+						         :owner="m.d_id === chatUser.id"
+						         :text="m.text" />
 					</div>
 				</div>
 			</div>

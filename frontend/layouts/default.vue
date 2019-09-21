@@ -20,18 +20,38 @@
 				app
 		>
 			<div class="avatar">
-				<div class="avatar__image"
-				     style="background-image: url(https://images.wallpaperscraft.ru/image/for_honor_shlem_personazh_art_113107_1280x1024.jpg)"></div>
+				<div class="avatar__top mb-8">
+					<div class="avatar__image"
+					     :style="{backgroundImage: `url(img/${user.image_url})` }" >
+						<div class="avatar__likes d-flex justify-center">
+							<div class="icon-text d-flex align-center">
+								<v-icon color="red">mdi-cards-heart</v-icon>
+								<div class="icon-text__value ml-2">
+									11
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--<div class="avatar__image"-->
+					     <!--:style="{backgroundImage: `url(${require(`~/assets/img/${user.image_url}`)})` }">-->
+						<!--<div class="avatar__likes d-flex justify-center">-->
+							<!--<div class="icon-text d-flex align-center">-->
+								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
+								<!--<div class="icon-text__value ml-2">-->
+									<!--11-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				</div>
 				<div class="avatar__name mb-2">
 					{{user.name}}
 				</div>
-				<div class="avatar__likes d-flex justify-center">
-					<div class="icon-text d-flex align-center">
-						<v-icon color="red">mdi-cards-heart</v-icon>
-						<div class="icon-text__value ml-2">
-							11
-						</div>
-					</div>
+				<div>
+					<!--<img :src="`/img/${user.image_url}`" alt="">-->
+					<!--<img :src="require('~/assets/v.png')" alt="">-->
+					<!--<img :src="require(`@/assets/v.png`)" alt="">-->
+					<!--<img :src="import('~/assets/v.png')" alt="">-->
 				</div>
 			</div>
 			<v-list>
@@ -70,14 +90,15 @@
 				<v-icon>mdi-application</v-icon>
 			</v-btn>
 
-			<v-toolbar-title class="px-3" v-text="title"/>
-			<v-btn class="ml-4" to="/dashboard">Dashboard</v-btn>
-			<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>
-			<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>
-			<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>
+			<v-toolbar-title class="px-3" v-text="user.name"/>
+			<!--<v-btn class="ml-4" to="/dashboard">Dashboard</v-btn>-->
+			<!--<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>-->
+			<!--<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>-->
+			<!--<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>-->
 			<v-spacer/>
 			<template v-if="authenticated">
-				<v-btn class="error ml-3" @click.prevent="logout">Logout</v-btn>
+				<v-btn to="/settings"><v-icon>mdi-brightness-7</v-icon></v-btn>
+				<v-btn class="error ml-4" @click.prevent="logout">Logout</v-btn>
 			</template>
 			<template v-else>
 				<v-btn class="primary" to="/login">Login</v-btn>
@@ -153,13 +174,17 @@
 				],
 				miniVariant: false,
 				right: true,
-				rightDrawer: false,
-				title: 'Denis'
+				rightDrawer: false
 			}
 		},
 		methods: {
 			logout() {
 				this.$auth.logout();
+			}
+		},
+		computed: {
+			imageUrl() {
+				// return require('~/assets/img/' + this.$store.state.auth.user.image_url)
 			}
 		},
 		mounted() {
@@ -187,19 +212,32 @@
 	.avatar {
 		padding: 30px 20px 10px;
 
+		&__top {
+			padding-right: 30px;
+		}
+
 		&__image {
-			width: 120px;
-			height: 120px;
+			position: relative;
+			width: 150px;
+			height: 150px;
 			border-radius: 50%;
 			background-size: cover;
 			background-position: center center;
 			margin: 0 auto 10px auto;
+			border: 2px solid #fff;
 		}
 
 		&__name {
 			text-align: center;
 			color: #FFF;
 			font-size: 20px;
+			padding-right: 30px;
+		}
+
+		&__likes {
+			position: absolute;
+			bottom: -20px;
+			right: -30px;
 		}
 	}
 

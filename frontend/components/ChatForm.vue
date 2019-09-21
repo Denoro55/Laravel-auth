@@ -15,11 +15,12 @@
 		}),
 		methods: {
 			send() {
-				console.log(this.$store.state)
+				// console.log(this.$store.state)
 				this.$socket.emit('createMessage', {
 					text: this.text,
 					name: this.$store.state.auth.user.name,
-					id: this.$store.state.chatUser.id
+					id: this.$store.state.chatUser.id,
+					avatar: this.$store.state.auth.user.image_url
 				}, data => {
 					if (typeof data === 'string') {
 						console.error(data);

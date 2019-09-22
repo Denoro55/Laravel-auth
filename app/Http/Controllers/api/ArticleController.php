@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Article;
+use App\ArticleLikes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\JWTAuth;
 
 class ArticleController extends Controller
@@ -17,9 +19,27 @@ class ArticleController extends Controller
         $this->auth = $auth;
     }
 
+    public function like(Request $request)
+    {
+        $type = $request->type;
+        if ($type === 'add') {
+            DB::table('article_likes')->insert(
+                ['user_id' => $request->user_id, 'article_id' => $request->article_id]
+            );
+        } else {
+            DB::table('article_likes')->where('user_id', $request->user_id)->where('article_id', $request->article_id)->delete();
+        }
+    }
+
     public function index(Request $request)
     {
-        return Article::where('user_id', $request->user_id)->get();
+        $articles = DB::select(DB::raw("SELECT a.*, COUNT(al.article_id) as likes, COUNT(u.id) as liked
+            from articles a
+            left join article_likes al ON a.id = al.article_id
+            left join users u ON al.user_id = u.id AND u.id = {$request->user_id}
+            where a.user_id = {$request->user_id} group by a.id order by a.updated_at"));
+
+        return $articles;
     }
 
     public function store(Request $request) // create new article

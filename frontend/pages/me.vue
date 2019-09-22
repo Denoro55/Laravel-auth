@@ -13,6 +13,7 @@
 				<div v-show="buttonText === 'hide'" class="article-form mb-4">
 
 					<v-text-field
+							autocomplete="off"
 							v-model="title"
 							:rules="titleRules"
 							label="Title"
@@ -64,13 +65,13 @@
 									<div class="icon-text d-flex align-center ml-4">
 										<v-icon color="red">mdi-cards-heart</v-icon>
 										<div class="icon-text__value ml-2">
-											23
+											{{ article.likes }}
 										</div>
 									</div>
 									<v-btn @click="showComment(article)" class="primary ml-4">
 										Comments
 									</v-btn>
-									<v-btn class="error ml-4">
+									<v-btn @click="likeArticle(article)" class="ml-4" :class="{error: !article.liked}">
 										<v-icon color="white">mdi-cards-heart</v-icon>
 									</v-btn>
 									<div class="articles_created ml-auto">
@@ -152,7 +153,6 @@
 				this.$refs.form.reset();
 				console.log(this.$refs);
 			},
-
 			hide() {
 				this.buttonText = this.buttonText === 'hide' ? 'show' : 'hide';
 			},
@@ -178,6 +178,24 @@
 				return this.$axios.post('http://laravel-auth/api/articles', options).then((res) => {
 					this.articles = res.data;
 				});
+			},
+			async likeArticle(article) {
+				let type = 'add';
+				if (article.liked) {
+					article.likes--;
+					article.liked = null;
+					type = 'remove';
+				} else {
+					article.likes++;
+					article.liked = 1;
+				}
+				const form = {
+					article_id: article.id,
+					user_id: this.$store.state.auth.user.id,
+					type: type
+				};
+				console.log(article);
+				await this.$axios.$post('http://laravel-auth/api/articles/like', form);
 			},
 			async showComment(article) {
 				if (!article.commentsLoaded) {
@@ -221,6 +239,7 @@
 						e.commentsLoaded = false;
 						e.comments = []
 					});
+					console.log(data)
 					return { articles: data }
 				})
 		},

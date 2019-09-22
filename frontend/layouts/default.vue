@@ -22,7 +22,7 @@
 			<div class="avatar">
 				<div class="avatar__top mb-8">
 					<div class="avatar__image"
-					     :style="{backgroundImage: `url(img/${user.image_url})` }" >
+					     :style="{backgroundImage: `url(/img/${user.image_url})` }" >
 						<div class="avatar__likes d-flex justify-center">
 							<div class="icon-text d-flex align-center">
 								<v-icon color="red">mdi-cards-heart</v-icon>
@@ -93,7 +93,7 @@
 			<v-toolbar-title class="px-3" v-text="user.name"/>
 			<!--<v-btn class="ml-4" to="/dashboard">Dashboard</v-btn>-->
 			<!--<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>-->
-			<!--<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>-->
+			<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>
 			<!--<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>-->
 			<v-spacer/>
 			<template v-if="authenticated">

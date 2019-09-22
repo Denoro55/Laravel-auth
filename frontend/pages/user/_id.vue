@@ -40,7 +40,7 @@
 								<div class="icon-text d-flex align-center">
 									<v-icon>mdi-comment</v-icon>
 									<div class="icon-text__value ml-2">
-										23
+										{{ article.commentsCount }}
 									</div>
 								</div>
 								<div class="icon-text d-flex align-center ml-4">
@@ -81,12 +81,14 @@
 									</div>
 								</v-form>
 							</div>
-							<div v-for="comment in article.comments" class="article-comment white black--text elevation-5 mb-5 pa-5 d-flex">
-								<div class="article-comment__logo mr-4" style="background-image: url(https://images.wallpaperscraft.ru/image/for_honor_shlem_personazh_art_113107_1280x1024.jpg)"></div>
+							<div v-for="comment in article.comments" class="article-comment white black--text elevation-5 mb-5 pa-4 d-flex">
+								<div class="article-comment__logo mr-4" :style="{backgroundImage: `url(/img/${comment.userImage})`}"></div>
 								<div class="article-comment__content">
-									<div class="article-comment__name mb-1">{{ comment.name }}</div>
+									<div class="article-comment__head">
+										<div class="article-comment__name mb-1">{{ comment.name }}</div>
+										<div class="article-comment__date">{{ comment.created_at }}</div>
+									</div>
 									<div class="article-comment__text mb-1">{{ comment.text }}</div>
-									<div class="article-comment__date">{{ comment.created_at }}</div>
 								</div>
 							</div>
 						</div>
@@ -131,13 +133,30 @@
 			async showComment(article) {
 				if (!article.commentsLoaded) {
 					const form = { article_id: article.id };
-					const response = await this.$axios.$post('http://laravel-auth/api/comments', form);
-					console.log(response)
+					const response = await this.$axios.$post('http://laravel-auth/api/articles/comments', form);
+					console.log(response);
 					article.commentsLoaded = true;
 					article.comments = response;
 				}
 				console.log(article);
 				article.showComment = !article.showComment;
+			},
+			async sendComment(article, event) {
+				const ref = 'commentForm-' + article.id;
+				const thisForm = this.$refs[ref][0];
+				thisForm.reset();
+				const form = {
+					article_id: article.id,
+					user_id: this.$store.state.auth.user.id,
+					name: this.$store.state.auth.user.name,
+					text: event.target[0].value,
+					created_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+				};
+				const response = await this.$axios.$post('http://laravel-auth/api/articles/comment', form);
+				article.commentsCount++;
+				if (response.success === true) {
+					article.comments.unshift(Object.assign(form, {userImage: this.$store.state.auth.user.image_url}));
+				}
 			},
 			async likeArticle(article) {
 				let type = 'add';
@@ -189,4 +208,6 @@
 			flex: 1;
 		}
 	}
+
+
 </style>

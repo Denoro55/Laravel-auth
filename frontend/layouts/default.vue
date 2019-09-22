@@ -93,6 +93,7 @@
 			<v-toolbar-title class="px-3" v-text="user.name"/>
 			<!--<v-btn class="ml-4" to="/dashboard">Dashboard</v-btn>-->
 			<!--<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>-->
+			<v-btn class="ml-4 info" to="/user/1">User 1</v-btn>
 			<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>
 			<!--<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>-->
 			<v-spacer/>
@@ -238,6 +239,43 @@
 			position: absolute;
 			bottom: -20px;
 			right: -30px;
+		}
+	}
+
+	.article-comment {
+		border-radius: 10px;
+
+		&__logo {
+			flex-shrink: 0;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			background-size: cover;
+			background-position: center center;
+			/*border: 1px solid #b1adad;*/
+		}
+
+		&__content {
+			flex: 1;
+		}
+		
+		&__head {
+			display: flex;
+		}
+
+		&__name {
+			font-weight: 500;
+		}
+
+		&__date {
+			font-size: .9em;
+			text-align: right;
+			color: #545454;
+			margin-left: auto;
+		}
+
+		&__text {
+			font-size: 14px;
 		}
 	}
 

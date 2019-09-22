@@ -59,7 +59,7 @@
 									<div class="icon-text d-flex align-center">
 										<v-icon>mdi-comment</v-icon>
 										<div class="icon-text__value ml-2">
-											23
+											{{ article.commentsCount }}
 										</div>
 									</div>
 									<div class="icon-text d-flex align-center ml-4">
@@ -92,6 +92,7 @@
 														:rules="messageRules"
 														label="Write a message"
 														required
+														autocomplete="false"
 												></v-text-field>
 											</div>
 											<div class="new-comment__send">
@@ -100,8 +101,8 @@
 										</div>
 									</v-form>
 								</div>
-								<div v-for="comment in article.comments" class="article-comment white black--text elevation-5 mb-5 pa-5 d-flex">
-									<div class="article-comment__logo mr-4" style="background-image: url(https://images.wallpaperscraft.ru/image/for_honor_shlem_personazh_art_113107_1280x1024.jpg)"></div>
+								<div v-for="comment in article.comments" class="article-comment white black--text elevation-5 mb-5 pa-4 d-flex">
+									<div class="article-comment__logo mr-4" :style="{backgroundImage: `url(/img/${comment.userImage})`}"></div>
 									<div class="article-comment__content">
 										<div class="article-comment__name mb-1">{{ comment.name }}</div>
 										<div class="article-comment__text mb-1">{{ comment.text }}</div>
@@ -126,6 +127,23 @@
 
 <script>
 	export default {
+		asyncData ({ $axios, store }) {
+			// this.$store.state.auth.user.id
+			const options = {
+				user_id: store.state.auth.user.id
+			};
+			return $axios.post('http://laravel-auth/api/articles', options)
+				.then((res) => {
+					let data = res.data;
+					data.forEach(function(e){
+						e.showComment = false;
+						e.commentsLoaded = false;
+						e.comments = []
+					});
+					console.log(data);
+					return { articles: data }
+				})
+		},
 		data() {
 			return {
 				valid: false,
@@ -162,13 +180,14 @@
 				thisForm.reset();
 				const form = {
 					article_id: article.id,
+					user_id: this.$store.state.auth.user.id,
 					name: this.$store.state.auth.user.name,
 					text: event.target[0].value,
-					created_at: Date.now()
+					created_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
 				};
-				const response = await this.$axios.$post('http://laravel-auth/api/comments/store', form);
+				const response = await this.$axios.$post('http://laravel-auth/api/articles/comment', form);
 				if (response.success === true) {
-					article.comments.unshift(form);
+					article.comments.unshift(Object.assign(form, {userImage: this.$store.state.auth.user.image_url}));
 				}
 			},
 			getArticles() {
@@ -200,7 +219,7 @@
 			async showComment(article) {
 				if (!article.commentsLoaded) {
 					const form = { article_id: article.id };
-					const response = await this.$axios.$post('http://laravel-auth/api/comments', form);
+					const response = await this.$axios.$post('http://laravel-auth/api/articles/comments', form);
 					article.commentsLoaded = true;
 					article.comments = response;
 				}
@@ -225,23 +244,6 @@
 			getArticleRef(article) {
 				return 'input'+article.id;
 			}
-		},
-		asyncData ({ $axios, store }) {
-			// this.$store.state.auth.user.id
-			const options = {
-				user_id: store.state.auth.user.id
-			};
-			return $axios.post('http://laravel-auth/api/articles', options)
-				.then((res) => {
-					let data = res.data;
-					data.forEach(function(e){
-						e.showComment = false;
-						e.commentsLoaded = false;
-						e.comments = []
-					});
-					console.log(data)
-					return { articles: data }
-				})
 		},
 		mounted() {
 			console.log(this.$store.state.auth.user.id);
@@ -269,37 +271,6 @@
 	.new-comment {
 		&__input {
 			flex: 1;
-		}
-	}
-
-	.article-comment {
-		border-radius: 10px;
-
-		&__logo {
-			flex-shrink: 0;
-			width: 40px;
-			height: 40px;
-			border-radius: 50%;
-			background-size: cover;
-			background-position: center center;
-		}
-
-		&__content {
-			flex: 1;
-		}
-
-		&__name {
-			font-weight: 500;
-		}
-
-		&__date {
-			font-size: .9em;
-			text-align: right;
-			color: #545454;
-		}
-
-		&__text {
-			font-size: 14px;
 		}
 	}
 </style>

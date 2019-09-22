@@ -13,10 +13,12 @@ class UserController extends Controller
 {
     public function index(Request $request) {
         $user = User::where('id', $request->user_id)->first();
-        $articles = DB::select(DB::raw("SELECT a.*, COUNT(al.article_id) as likes, COUNT(u.id) as liked
+        $articles = DB::select(DB::raw(
+            "SELECT a.*,
+            (SELECT COUNT(1) FROM article_likes al WHERE al.article_id = a.id) as likes,
+            (SELECT COUNT(1) FROM article_comments ac WHERE ac.article_id = a.id) as commentsCount,
+            (SELECT COUNT(1) FROM article_likes al WHERE al.article_id = a.id AND al.user_id = {$request->watcher_id}) as liked
             from articles a
-            left join article_likes al ON a.id = al.article_id
-            left join users u ON al.user_id = u.id AND u.id = {$request->watcher_id}
             where a.user_id = {$request->user_id} group by a.id order by a.updated_at"));
         $data = [
             'user' => $user,

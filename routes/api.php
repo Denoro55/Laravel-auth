@@ -26,8 +26,8 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('/articles/store','ArticleController@store');
     Route::post('/articles/remove', 'ArticleController@remove');
     Route::post('/articles/like', 'ArticleController@like');
-
-    Route::post('/comments/store','CommentController@store');
+    Route::post('/articles/comment','ArticleController@comment');
+    Route::post('/articles/comments','ArticleController@commentsAll');
 
     Route::post('/user/updateAvatar','UserController@updateAvatar');
 });

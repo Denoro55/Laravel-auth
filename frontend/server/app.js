@@ -7,6 +7,8 @@ const m = (name, text, d_id, avatar) => ({name, text, d_id, avatar});
 
 io.on('connection', socket => {
 
+	console.log('socket coonect with ID: ', socket.id);
+
 	socket.on('joinedUser', (data, cb) => {
 		if (false) {
 			return cb('Invalid data');

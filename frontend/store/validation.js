@@ -13,12 +13,6 @@ export const getters = {
 export const mutations = {
 	SET_VALIDATION_ERRORS(state, errors) {
 		state.errors = errors;
-	},
-	GET_PROFILE_INFO(state, errors) {
-		this.$axios.post('http://laravel-auth/api/user/profile', {user_id: 1})
-			.then((res) => {
-				console.log('res ' , res.data);
-			})
 	}
 };
 

@@ -9,21 +9,36 @@
 					<div class="another-user__name mb-2">{{another_user.name}}</div>
 					<div class="another-user__params mb-4 d-flex">
 						<div class="another-user__param d-flex align-center">
-							<v-icon class="ml-0" color="red" light right>mdi-cards-heart</v-icon></v-btn>
+							<v-icon class="ml-0" color="red" light right>mdi-cards-heart</v-icon>
 							<div class="another-user__param-value ml-2">{{another_user.avatarLikes}}</div>
 						</div>
 						<div class="another-user__param d-flex align-center ml-5">
-							<v-icon class="ml-0" color="white" light right>mdi-account-multiple</v-icon></v-btn>
-							<div class="another-user__param-value ml-2">65</div>
+							<v-icon class="ml-0" color="white" light right>mdi-account-multiple</v-icon>
+							<div class="another-user__param-value ml-2">{{another_user.userFriends}}</div>
 						</div>
 					</div>
-					<v-btn color="primary">Message
+					<v-btn :to="`/messages?user=${another_user.id}`" class="primary">
+						Message
 						<v-icon class="ml-3" dark right>mdi-email</v-icon>
 					</v-btn>
-					<v-btn class="success ml-3">Add friend
-						<v-icon class="ml-1" medium dark right>mdi-account</v-icon></v-btn>
+					<template v-if="!another_user.isFriend">
+						<v-btn @click="addFriend" class="success ml-3">Add friend
+							<v-icon class="ml-1" medium dark right>mdi-account</v-icon>
+						</v-btn>
+					</template>
+					<template v-else-if="another_user.isFriend === 1">
+						<v-btn @click="removeFriend" class="ml-3">Add friend
+							<v-icon class="ml-1" medium dark right>mdi-account</v-icon>
+						</v-btn>
+					</template>
+					<template v-else>
+						<v-btn @click="removeFriend" class="error ml-3">Remove friend
+							<v-icon class="ml-1" medium dark right>mdi-account</v-icon>
+						</v-btn>
+					</template>
 					<v-btn :class="{error: !another_user.liked }" @click="likeAvatar" class="ml-3">Like
-						<v-icon light right>mdi-cards-heart</v-icon></v-btn>
+						<v-icon light right>mdi-cards-heart</v-icon>
+					</v-btn>
 				</div>
 			</div>
 		</div>
@@ -106,6 +121,7 @@
 				user_id: params.id,
 				watcher_id: store.state.auth.user.id
 			};
+			console.log(options);
 			const user = await $axios.post('http://laravel-auth/api/user', options);
 			let articles = user.data.articles;
 			articles.forEach(function(e){
@@ -190,6 +206,22 @@
 					type: type
 				};
 				this.$axios.$post('http://laravel-auth/api/user/likeAvatar', form);
+			},
+			addFriend() {
+				const form = {
+					user_id: this.$store.state.auth.user.id,
+					friend_id: this.another_user.id
+				};
+				this.another_user.isFriend = 1;
+				this.$axios.$post('http://laravel-auth/api/user/addFriend', form);
+			},
+			removeFriend() {
+				const form = {
+					user_id: this.$store.state.auth.user.id,
+					friend_id: this.another_user.id
+				};
+				this.another_user.isFriend = null;
+				this.$axios.$post('http://laravel-auth/api/user/removeFriend', form);
 			},
 			isPostLiked(id) {
 				return id !== 0;

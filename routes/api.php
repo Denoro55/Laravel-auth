@@ -31,7 +31,15 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 
     Route::post('/user/updateAvatar','UserController@updateAvatar');
     Route::post('/user/likeAvatar','UserController@likeAvatar');
+
     Route::post('/user/profile','UserController@profile');
+
+    Route::post('/user/addFriend','UserController@addFriend');
+    Route::post('/user/removeFriend','UserController@removeFriend');
+
+    Route::post('/user/friends','UserController@getFriends');
+    Route::post('/user/friendRequests','UserController@getFriendRequests');
+    Route::post('/user/confirmFriend','UserController@confirmFriend');
 });
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

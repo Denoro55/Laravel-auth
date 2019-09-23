@@ -17,7 +17,10 @@ class UserController extends Controller
         $user = DB::select(DB::raw(
             "SELECT u.*,
              (SELECT COUNT(1) FROM avatar_likes al WHERE al.user_id = u.id) as avatarLikes,
-             (SELECT COUNT(1) FROM avatar_likes al WHERE al.user_id = u.id AND al.liker_id = {$request->watcher_id}) as liked
+             (SELECT COUNT(1) FROM user_friends uf WHERE uf.user_id = u.id AND uf.status = 3) as userFriends,
+             (SELECT COUNT(1) FROM avatar_likes al WHERE al.user_id = u.id AND al.liker_id = {$request->watcher_id}) as liked,
+             (SELECT status FROM user_friends uf WHERE uf.user_id = {$request->watcher_id} 
+             AND uf.friend_id = {$request->user_id}) as isFriend
              FROM users u WHERE u.id = {$request->user_id}"
         ));
         $articles = DB::select(DB::raw(
@@ -43,6 +46,39 @@ class UserController extends Controller
         return $data;
     }
 
+    public function getFriends(Request $request) {
+        $data = DB::select(DB::raw(
+            "SELECT u.name, u.image_url, u.status, u.id
+            from user_friends uf
+            left join users u on uf.friend_id = u.id 
+            WHERE uf.user_id = {$request->user_id} AND uf.status = 3"));
+        return $data;
+    }
+
+    public function getFriendRequests(Request $request) {
+        $data = DB::select(DB::raw(
+            "SELECT u.name, u.image_url, u.status, u.id
+            from user_friends uf
+            left join users u on uf.friend_id = u.id 
+            WHERE uf.user_id = {$request->user_id} AND uf.status = 2"));
+        return $data;
+    }
+
+    public function confirmFriend(Request $request) {
+//        DB::table('user_friends')
+//            ->where('id', $request->user_id)
+//            ->update(['status' => 2]);
+//        DB::table('user_friends')
+//            ->where('id', $request->friend_id)
+//            ->update(['status' => 2]);
+        DB::table('user_friends')
+            ->whereIn('user_id', [$request->user_id, $request->friend_id])
+            ->update(['status' => 3]);
+        return [
+            'success' => true
+        ];
+    }
+
     public function likeAvatar(Request $request) {
         if ($request->type === 'like') {
             DB::table('avatar_likes')->insert(
@@ -51,6 +87,18 @@ class UserController extends Controller
         } else {
             DB::table('avatar_likes')->where('user_id', $request->user_id)->where('liker_id', $request->liker_id)->delete();
         }
+    }
+
+    public function addFriend(Request $request) {
+        DB::table('user_friends')->insert([
+            ['user_id' => $request->user_id, 'friend_id' => $request->friend_id, 'status' => 1],
+            ['user_id' => $request->friend_id, 'friend_id' => $request->user_id, 'status' => 2]
+        ]);
+    }
+
+    public function removeFriend(Request $request) {
+        DB::table('user_friends')->where('user_id', $request->user_id)->where('friend_id', $request->friend_id)->delete();
+        DB::table('user_friends')->where('user_id', $request->friend_id)->where('friend_id', $request->user_id)->delete();
     }
 
     public function updateAvatar(Request $request) {

@@ -7,7 +7,6 @@ export default function({$axios, store}) {
 	});
 
 	$axios.onRequest(() => {
-		console.log('request Clear');
 		store.dispatch('validation/clearErrors');
 	})
 }

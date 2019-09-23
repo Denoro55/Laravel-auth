@@ -64,7 +64,7 @@
 			}
 		},
 		mounted() {
-			console.log(this.$store.state);
+			console.log(this.$store.$axios);
 		}
 	}
 </script>

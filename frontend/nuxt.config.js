@@ -49,7 +49,8 @@ module.exports = {
     },
 	router: {
     	middleware: [
-    		'clearValidationErrors'
+    		'clearValidationErrors',
+			'profileInfo'
 		]
 	},
     auth: {

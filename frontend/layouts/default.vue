@@ -21,17 +21,18 @@
 		>
 			<div class="avatar">
 				<div class="avatar__top mb-8">
-					<div class="avatar__image"
-					     :style="{backgroundImage: `url(/img/${user.image_url})` }" >
-						<div class="avatar__likes d-flex justify-center">
-							<div class="icon-text d-flex align-center">
-								<v-icon color="red">mdi-cards-heart</v-icon>
-								<div class="icon-text__value ml-2">
-									11
-								</div>
-							</div>
-						</div>
-					</div>
+					<UserPanel :likes="userInfo.likes" />
+					<!--<div class="avatar__image"-->
+					     <!--:style="{backgroundImage: `url(/img/${user.image_url})` }" >-->
+						<!--<div class="avatar__likes d-flex justify-center">-->
+							<!--<div class="icon-text d-flex align-center">-->
+								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
+								<!--<div class="icon-text__value ml-2">-->
+									<!--11-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
 					<!--<div class="avatar__image"-->
 					     <!--:style="{backgroundImage: `url(${require(`~/assets/img/${user.image_url}`)})` }">-->
 						<!--<div class="avatar__likes d-flex justify-center">-->
@@ -45,7 +46,7 @@
 					<!--</div>-->
 				</div>
 				<div class="avatar__name mb-2">
-					{{user.name}}
+					{{ user.name }}
 				</div>
 				<div>
 					<!--<img :src="`/img/${user.image_url}`" alt="">-->
@@ -95,7 +96,7 @@
 			<!--<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>-->
 			<v-btn class="ml-4 info" to="/user/1">User 1</v-btn>
 			<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>
-			<!--<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>-->
+			<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>
 			<v-spacer/>
 			<template v-if="authenticated">
 				<v-btn to="/settings"><v-icon>mdi-brightness-7</v-icon></v-btn>
@@ -138,7 +139,22 @@
 </template>
 
 <script>
+	import UserPanel from '@/components/UserPanel';
 	export default {
+		components: {
+			UserPanel
+		},
+		// async asyncData ({ $axios, store }) {
+		// 	const options = {
+		// 		user_id: store.state.auth.user.id
+		// 	};
+		// 	console.log(options);
+		// 	const user = await $axios.post('http://laravel-auth/api/user/profile', options);
+		// 	console.log('dasdasdasdsd',user);
+		// 	return {
+		// 		profile: user
+		// 	}
+		// },
 		data() {
 			return {
 				clipped: false,
@@ -186,6 +202,9 @@
 		computed: {
 			imageUrl() {
 				// return require('~/assets/img/' + this.$store.state.auth.user.image_url)
+			},
+			userInfo() {
+				return this.$store.state.userInfo;
 			}
 		},
 		mounted() {

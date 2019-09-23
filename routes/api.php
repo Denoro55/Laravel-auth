@@ -30,6 +30,8 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post('/articles/comments','ArticleController@commentsAll');
 
     Route::post('/user/updateAvatar','UserController@updateAvatar');
+    Route::post('/user/likeAvatar','UserController@likeAvatar');
+    Route::post('/user/profile','UserController@profile');
 });
 
 //Route::middleware('auth:api')->get('/user', function (Request $request) {

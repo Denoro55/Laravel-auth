@@ -10,19 +10,19 @@
 					<div class="another-user__params mb-4 d-flex">
 						<div class="another-user__param d-flex align-center">
 							<v-icon class="ml-0" color="red" light right>mdi-cards-heart</v-icon></v-btn>
-							<div class="another-user__param-value ml-2">23</div>
+							<div class="another-user__param-value ml-2">{{another_user.avatarLikes}}</div>
 						</div>
 						<div class="another-user__param d-flex align-center ml-5">
 							<v-icon class="ml-0" color="white" light right>mdi-account-multiple</v-icon></v-btn>
 							<div class="another-user__param-value ml-2">65</div>
 						</div>
 					</div>
-					<v-btn>Message
+					<v-btn color="primary">Message
 						<v-icon class="ml-3" dark right>mdi-email</v-icon>
 					</v-btn>
 					<v-btn class="success ml-3">Add friend
 						<v-icon class="ml-1" medium dark right>mdi-account</v-icon></v-btn>
-					<v-btn class="red ml-3">Like
+					<v-btn :class="{error: !another_user.liked }" @click="likeAvatar" class="ml-3">Like
 						<v-icon light right>mdi-cards-heart</v-icon></v-btn>
 				</div>
 			</div>
@@ -58,9 +58,7 @@
 								<div class="articles_created ml-auto">
 									{{ article.updated_at }}
 								</div>
-								<v-btn @click="removeArticle(article.id)" class="error ml-4">
-									Remove
-								</v-btn>
+
 							</div>
 						</div>
 						<div v-show="article.showComment" class="article__comments mb-2 mt-6">
@@ -101,13 +99,13 @@
 
 <script>
 	export default {
+		middleware: 'userPage',
 		async asyncData ({ $axios, store, params }) {
 			// this.$store.state.auth.user.id
 			const options = {
 				user_id: params.id,
 				watcher_id: store.state.auth.user.id
 			};
-			console.log(options);
 			const user = await $axios.post('http://laravel-auth/api/user', options);
 			let articles = user.data.articles;
 			articles.forEach(function(e){
@@ -118,7 +116,7 @@
 			console.log(user);
 			return {
 				articles: articles,
-				another_user: user.data.user
+				another_user: user.data.user[0],
 			}
 		},
 		data() {
@@ -176,6 +174,23 @@
 				console.log(article);
 				await this.$axios.$post('http://laravel-auth/api/articles/like', form);
 			},
+			likeAvatar() {
+				let type = 'like';
+				if (this.another_user.liked) {
+					this.another_user.liked = null;
+					this.another_user.avatarLikes--;
+					type = 'dislike';
+				} else {
+					this.another_user.liked = 1;
+					this.another_user.avatarLikes++;
+				}
+				const form = {
+					liker_id: this.$store.state.auth.user.id,
+					user_id: this.another_user.id,
+					type: type
+				};
+				this.$axios.$post('http://laravel-auth/api/user/likeAvatar', form);
+			},
 			isPostLiked(id) {
 				return id !== 0;
 			}
@@ -191,8 +206,8 @@
 		padding-top: 20px;
 
 		&__logo {
-			width: 180px;
-			height: 180px;
+			width: 150px;
+			height: 150px;
 			border-radius: 50%;
 			background-size: cover;
 			background-position: center center;

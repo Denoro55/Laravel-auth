@@ -6,7 +6,9 @@ export default function({$axios, store}) {
 		return Promise.reject(error);
 	});
 
-	$axios.onRequest(() => {
+	$axios.onRequest((config ) => {
+		// config.headers.common['Content-Type'] = 'text/plain;charset=utf-8';
+		// config.headers.common['Access-Control-Allow-Origin'] = '*';
 		store.dispatch('validation/clearErrors');
 	})
 }

@@ -122,7 +122,7 @@
 				watcher_id: store.state.auth.user.id
 			};
 			console.log(options);
-			const user = await $axios.post('http://laravel-auth/api/user', options);
+			const user = await $axios.post('user', options);
 			let articles = user.data.articles;
 			articles.forEach(function(e){
 				e.showComment = false;
@@ -147,7 +147,7 @@
 			async showComment(article) {
 				if (!article.commentsLoaded) {
 					const form = { article_id: article.id };
-					const response = await this.$axios.$post('http://laravel-auth/api/articles/comments', form);
+					const response = await this.$axios.$post('articles/comments', form);
 					console.log(response);
 					article.commentsLoaded = true;
 					article.comments = response;
@@ -166,7 +166,7 @@
 					text: event.target[0].value,
 					created_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
 				};
-				const response = await this.$axios.$post('http://laravel-auth/api/articles/comment', form);
+				const response = await this.$axios.$post('articles/comment', form);
 				article.commentsCount++;
 				if (response.success === true) {
 					article.comments.unshift(Object.assign(form, {userImage: this.$store.state.auth.user.image_url}));
@@ -188,7 +188,7 @@
 					type: type
 				};
 				console.log(article);
-				await this.$axios.$post('http://laravel-auth/api/articles/like', form);
+				await this.$axios.$post('articles/like', form);
 			},
 			likeAvatar() {
 				let type = 'like';
@@ -205,7 +205,7 @@
 					user_id: this.another_user.id,
 					type: type
 				};
-				this.$axios.$post('http://laravel-auth/api/user/likeAvatar', form);
+				this.$axios.$post('user/likeAvatar', form);
 			},
 			addFriend() {
 				const form = {
@@ -213,7 +213,7 @@
 					friend_id: this.another_user.id
 				};
 				this.another_user.isFriend = 1;
-				this.$axios.$post('http://laravel-auth/api/user/addFriend', form);
+				this.$axios.$post('user/addFriend', form);
 			},
 			removeFriend() {
 				const form = {
@@ -221,7 +221,7 @@
 					friend_id: this.another_user.id
 				};
 				this.another_user.isFriend = null;
-				this.$axios.$post('http://laravel-auth/api/user/removeFriend', form);
+				this.$axios.$post('user/removeFriend', form);
 			},
 			isPostLiked(id) {
 				return id !== 0;

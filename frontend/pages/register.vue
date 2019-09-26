@@ -106,7 +106,7 @@
 	        async register(){
             	const form = {name: this.name, email: this.email, password: this.password};
 				try {
-					await this.$axios.$post('http://laravel-auth/api/auth/register', form);
+					await this.$axios.$post('auth/register', form);
 				} catch(e) {
 					return;
 				}

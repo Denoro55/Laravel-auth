@@ -132,7 +132,7 @@
 			const options = {
 				user_id: store.state.auth.user.id
 			};
-			return $axios.post('http://laravel-auth/api/articles', options)
+			return $axios.post('articles', options)
 				.then((res) => {
 					let data = res.data;
 					data.forEach(function(e){
@@ -185,7 +185,7 @@
 					text: event.target[0].value,
 					created_at: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
 				};
-				const response = await this.$axios.$post('http://laravel-auth/api/articles/comment', form);
+				const response = await this.$axios.$post('articles/comment', form);
 				if (response.success === true) {
 					article.comments.unshift(Object.assign(form, {userImage: this.$store.state.auth.user.image_url}));
 				}
@@ -194,7 +194,7 @@
 				const options = {
 					user_id: this.$store.state.auth.user.id
 				};
-				return this.$axios.post('http://laravel-auth/api/articles', options).then((res) => {
+				return this.$axios.post('articles', options).then((res) => {
 					this.articles = res.data;
 				});
 			},
@@ -214,12 +214,12 @@
 					type: type
 				};
 				console.log(article);
-				await this.$axios.$post('http://laravel-auth/api/articles/like', form);
+				await this.$axios.$post('articles/like', form);
 			},
 			async showComment(article) {
 				if (!article.commentsLoaded) {
 					const form = { article_id: article.id };
-					const response = await this.$axios.$post('http://laravel-auth/api/articles/comments', form);
+					const response = await this.$axios.$post('articles/comments', form);
 					article.commentsLoaded = true;
 					article.comments = response;
 				}
@@ -227,13 +227,13 @@
 			},
 			async createArticle() {
 				const form = {title: this.title, content: this.content, user_id: this.$store.state.auth.user.id};
-				await this.$axios.$post('http://laravel-auth/api/articles/store', form);
+				await this.$axios.$post('articles/store', form);
 				this.$refs.form.reset();
 				this.getArticles();
 			},
 			async removeArticle(id) {
 				const form = { article_id: id };
-				await this.$axios.$post('http://laravel-auth/api/articles/remove', form);
+				await this.$axios.$post('articles/remove', form);
 				this.getArticles();
 			}
 		},

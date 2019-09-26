@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrap">
 		<div class="friends">
 			<div class="friends__nav mb-7">
 				<v-btn @click="friends = true" :class="{primary: friends}">Friends</v-btn>
@@ -72,7 +72,7 @@
 			const options = {
 				user_id: store.state.auth.user.id
 			};
-			return $axios.post('http://laravel-auth/api/user/friends', options)
+			return $axios.post('user/friends', options)
 				.then((res) => {
 					let data = res.data;
 					return { friendList: data }
@@ -91,7 +91,7 @@
 					const options = {
 						user_id: this.$store.state.auth.user.id
 					};
-					const friendRequests = await this.$axios.post('http://laravel-auth/api/user/friendRequests', options);
+					const friendRequests = await this.$axios.post('user/friendRequests', options);
 					this.friendRequests = friendRequests.data;
 					this.friendRequestsLoaded = true;
 				}
@@ -102,7 +102,7 @@
 					user_id: this.$store.state.auth.user.id,
 					friend_id: friend.id
 				};
-				const response = await this.$axios.$post('http://laravel-auth/api/user/confirmFriend', options);
+				const response = await this.$axios.$post('user/confirmFriend', options);
 				if (response.success) {
 					this.friendRequests.splice(this.friendRequests.indexOf(index), 1);
 					this.friendList.push(friend);

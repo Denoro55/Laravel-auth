@@ -27,6 +27,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^6.1.0",
     "eslint-plugin-nuxt": ">=0.4.2",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "vuetify": "^2.0.18"
   }
 }

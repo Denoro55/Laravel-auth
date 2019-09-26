@@ -1,5 +1,4 @@
 const colors = require('vuetify/es5/util/colors').default
-
 module.exports = {
     mode: 'universal',
     /*
@@ -45,7 +44,7 @@ module.exports = {
         '@nuxtjs/auth'
     ],
     axios: {
-        // baseUrl: 'http://localhost:3000/api'
+        baseURL: 'https://nuxt-app-db.herokuapp.com/api'
     },
 	router: {
     	middleware: [
@@ -58,13 +57,13 @@ module.exports = {
 			local: {
 				endpoints: {
 					login: {
-						url: 'http://laravel-auth/api/auth/login', method: "post", propertyName: 'token'
+						url: 'https://nuxt-app-db.herokuapp.com/api/auth/login', method: "post", propertyName: 'token'
 					},
 					user: {
-						url: 'http://laravel-auth/api/me', method: "get", propertyName: 'data'
+						url: 'https://nuxt-app-db.herokuapp.com/api/me', method: "get", propertyName: 'data'
 					},
 					logout: {
-						url: 'http://laravel-auth/api/auth/logout', method: "get"
+						url: 'https://nuxt-app-db.herokuapp.com/api/auth/logout', method: "get"
 					}
 				}
 			}
@@ -73,7 +72,8 @@ module.exports = {
     /*
     ** Nuxt.js modules
     */
-    modules: [],
+    modules: [
+	],
     /*
     ** vuetify module configuration
     ** https://github.com/nuxt-community/vuetify-module

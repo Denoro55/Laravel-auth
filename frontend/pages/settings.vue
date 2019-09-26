@@ -88,7 +88,7 @@
 				// formData.append('file', this.fileImage[0]);
 				formData.append('file', this.fileImage);
 				formData.append('user_id', this.$store.state.auth.user.id);
-				this.$axios.post('http://laravel-auth/api/user/updateAvatar', formData, {headers: {
+				this.$axios.post('user/updateAvatar', formData, {headers: {
 						'Content-Type': 'multipart/form-data'
 					}} ).then(response => {
 						console.log(response.data)

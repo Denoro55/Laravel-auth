@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="wrap">
 		<template>
 			<div class="pt-2">
 				<v-form>

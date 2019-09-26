@@ -22,37 +22,11 @@
 			<div class="avatar">
 				<div class="avatar__top mb-8">
 					<UserPanel :likes="userInfo.likes" />
-					<!--<div class="avatar__image"-->
-					     <!--:style="{backgroundImage: `url(/img/${user.image_url})` }" >-->
-						<!--<div class="avatar__likes d-flex justify-center">-->
-							<!--<div class="icon-text d-flex align-center">-->
-								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
-								<!--<div class="icon-text__value ml-2">-->
-									<!--11-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div class="avatar__image"-->
-					     <!--:style="{backgroundImage: `url(${require(`~/assets/img/${user.image_url}`)})` }">-->
-						<!--<div class="avatar__likes d-flex justify-center">-->
-							<!--<div class="icon-text d-flex align-center">-->
-								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
-								<!--<div class="icon-text__value ml-2">-->
-									<!--11-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</div>-->
-					<!--</div>-->
 				</div>
 				<div class="avatar__name mb-2">
 					{{ user.name }}
 				</div>
 				<div>
-					<!--<img :src="`/img/${user.image_url}`" alt="">-->
-					<!--<img :src="require('~/assets/v.png')" alt="">-->
-					<!--<img :src="require(`@/assets/v.png`)" alt="">-->
-					<!--<img :src="import('~/assets/v.png')" alt="">-->
 				</div>
 			</div>
 			<v-list>
@@ -73,9 +47,9 @@
 			</v-list>
 		</v-navigation-drawer>
 		<v-app-bar class="px-3 pl-4"
-				:clipped-left="clipped"
-				fixed
-				app
+		           :clipped-left="clipped"
+		           fixed
+		           app
 		>
 			<v-app-bar-nav-icon @click.stop="drawer = !drawer"/>
 			<v-btn
@@ -92,8 +66,6 @@
 			</v-btn>
 
 			<v-toolbar-title class="px-3" v-text="user.name"/>
-			<!--<v-btn class="ml-4" to="/dashboard">Dashboard</v-btn>-->
-			<!--<v-btn class="ml-4 info" to="/vuex">Vuex</v-btn>-->
 			<v-btn class="ml-4 info" to="/user/1">User 1</v-btn>
 			<v-btn class="ml-4 info" to="/user/2">User 2</v-btn>
 			<v-btn class="ml-4 info" to="/user/3">User 3</v-btn>
@@ -112,23 +84,6 @@
 				<nuxt/>
 			</v-container>
 		</v-content>
-		<!--<v-navigation-drawer-->
-				<!--v-model="rightDrawer"-->
-				<!--:right="right"-->
-				<!--temporary-->
-				<!--fixed-->
-		<!--&gt;-->
-			<!--<v-list>-->
-				<!--<v-list-item @click.native="right = !right">-->
-					<!--<v-list-item-action>-->
-						<!--<v-icon light>-->
-							<!--mdi-repeat-->
-						<!--</v-icon>-->
-					<!--</v-list-item-action>-->
-					<!--<v-list-item-title>Switch drawer (click me)</v-list-item-title>-->
-				<!--</v-list-item>-->
-			<!--</v-list>-->
-		<!--</v-navigation-drawer>-->
 		<v-footer
 				:fixed="fixed"
 				app
@@ -189,9 +144,6 @@
 			}
 		},
 		computed: {
-			imageUrl() {
-				// return require('~/assets/img/' + this.$store.state.auth.user.image_url)
-			},
 			userInfo() {
 				return this.$store.state.userInfo;
 			}
@@ -209,26 +161,9 @@
 </script>
 
 <style lang="scss">
-	.v-app-bar.v-app-bar--fixed {
-		z-index: 100;
-	}
-
-	.v-footer--absolute, .v-footer--fixed {
-		z-index: 50;
-	}
-
-	.v-navigation-drawer {
-		z-index: 150;
-	}
-
-	.wrap {
-		padding-top: 18px;
-	}
-
 	.container {
 		position: relative;
 		height: 100%;
-		padding-top: 0;
 	}
 
 	textarea {
@@ -246,6 +181,7 @@
 		&__top {
 			padding-right: 30px;
 		}
+
 
 		&__image {
 			position: relative;
@@ -282,13 +218,12 @@
 			border-radius: 50%;
 			background-size: cover;
 			background-position: center center;
-			/*border: 1px solid #b1adad;*/
 		}
 
 		&__content {
 			flex: 1;
 		}
-		
+
 		&__head {
 			display: flex;
 		}

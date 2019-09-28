@@ -44,7 +44,7 @@ module.exports = {
         '@nuxtjs/auth'
     ],
     axios: {
-        baseURL: 'https://nuxt-app-db.herokuapp.com/api'
+        baseURL: 'http://laravel-auth/api'
     },
 	router: {
     	middleware: [
@@ -57,13 +57,13 @@ module.exports = {
 			local: {
 				endpoints: {
 					login: {
-						url: 'https://nuxt-app-db.herokuapp.com/api/auth/login', method: "post", propertyName: 'token'
+						url: 'http://laravel-auth/api/auth/login', method: "post", propertyName: 'token'
 					},
 					user: {
-						url: 'https://nuxt-app-db.herokuapp.com/api/me', method: "get", propertyName: 'data'
+						url: 'http://laravel-auth/api/me', method: "get", propertyName: 'data'
 					},
 					logout: {
-						url: 'https://nuxt-app-db.herokuapp.com/api/auth/logout', method: "get"
+						url: 'http://laravel-auth/api/auth/logout', method: "get"
 					}
 				}
 			}

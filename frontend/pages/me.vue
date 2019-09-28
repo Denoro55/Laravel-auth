@@ -1,9 +1,5 @@
 <template>
-	<div class="pt-5">
-		<!--<div class="mb-4">-->
-			<!--<v-btn class="primary">Articles</v-btn>-->
-			<!--<v-btn class="ml-3 warning">Todos</v-btn>-->
-		<!--</div>-->
+	<div class="content">
 		<div>
 			<v-form
 				ref="form"
@@ -127,6 +123,7 @@
 
 <script>
 	export default {
+		middleware: 'auth',
 		asyncData ({ $axios, store }) {
 			// this.$store.state.auth.user.id
 			const options = {

@@ -16,23 +16,25 @@
 						Online users:
 					</div>
 				</div>
+				<v-list>
+					<v-list-item class="chat-user"
+							v-for="(item, i) in users"
+							:key="i"
+							:to="item.to"
+							router
+							exact
+					>
+						<v-list-item-action class="mr-4">
+							<div class="chat-user__image" :style="`backgroundImage: url(${item.image_url})`">
+							</div>
+							<!--<v-icon :color="chatUser.id === item.id ? 'green' : 'red'">mdi-account-circle</v-icon>-->
+						</v-list-item-action>
+						<v-list-item-content>
+							<v-list-item-title v-text="item.name"/>
+						</v-list-item-content>
+					</v-list-item>
+				</v-list>
 			</div>
-			<v-list>
-				<v-list-item
-						v-for="(item, i) in users"
-						:key="i"
-						:to="item.to"
-						router
-						exact
-				>
-					<v-list-item-action class="mr-4">
-						<v-icon :color="chatUser.id === item.id ? 'green' : 'red'">mdi-account-circle</v-icon>
-					</v-list-item-action>
-					<v-list-item-content>
-						<v-list-item-title v-text="item.name"/>
-					</v-list-item-content>
-				</v-list-item>
-			</v-list>
 		</v-navigation-drawer>
 		<v-app-bar class="px-3 pl-4"
 				:clipped-left="clipped"
@@ -116,6 +118,17 @@
 		padding-top: 12px;
 	}
 
+	.chat-user {
+		&__image {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			overflow: hidden;
+			background-size: cover;
+			background-position: center center;
+		}
+	}
+
 	.avatar {
 		padding: 30px 20px 10px;
 
@@ -135,6 +148,14 @@
 		}
 	}
 	.chat-sidebar {
-		padding: 20px 17px 0 17px;
+		padding: 25px 17px 0 25px;
+
+		.v-list-item {
+			padding-left: 0;
+		}
+
+		.v-list-item__action {
+			margin: 8px 0;
+		}
 	}
 </style>

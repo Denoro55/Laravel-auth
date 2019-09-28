@@ -171,7 +171,6 @@
 	}
 
 	.content {
-		padding-top: 12px;
 		height: 100%;
 	}
 

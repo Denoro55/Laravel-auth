@@ -1,5 +1,5 @@
 <template>
-	<v-app dark>
+	<v-app>
 		<v-snackbar
 				v-model="snackbar"
 				bottom
@@ -19,42 +19,11 @@
 				fixed
 				app
 		>
-			<div class="avatar">
-				<div class="avatar__top mb-8">
-					<UserPanel :likes="userInfo.likes" />
-					<!--<div class="avatar__image"-->
-					     <!--:style="{backgroundImage: `url(/img/${user.image_url})` }" >-->
-						<!--<div class="avatar__likes d-flex justify-center">-->
-							<!--<div class="icon-text d-flex align-center">-->
-								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
-								<!--<div class="icon-text__value ml-2">-->
-									<!--11-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</div>-->
-					<!--</div>-->
-					<!--<div class="avatar__image"-->
-					     <!--:style="{backgroundImage: `url(${require(`~/assets/img/${user.image_url}`)})` }">-->
-						<!--<div class="avatar__likes d-flex justify-center">-->
-							<!--<div class="icon-text d-flex align-center">-->
-								<!--<v-icon color="red">mdi-cards-heart</v-icon>-->
-								<!--<div class="icon-text__value ml-2">-->
-									<!--11-->
-								<!--</div>-->
-							<!--</div>-->
-						<!--</div>-->
-					<!--</div>-->
-				</div>
-				<div class="avatar__name mb-2">
-					{{ user.name }}
-				</div>
-				<div>
-					<!--<img :src="`/img/${user.image_url}`" alt="">-->
-					<!--<img :src="require('~/assets/v.png')" alt="">-->
-					<!--<img :src="require(`@/assets/v.png`)" alt="">-->
-					<!--<img :src="import('~/assets/v.png')" alt="">-->
-				</div>
-			</div>
+			<UserPanel :name="user.name" :likes="userInfo.likes" />
+			<!--<img :src="`/img/${user.image_url}`" alt="">-->
+			<!--<img :src="require('~/assets/v.png')" alt="">-->
+			<!--<img :src="require(`@/assets/v.png`)" alt="">-->
+			<!--<img :src="import('~/assets/v.png')" alt="">-->
 			<v-list>
 				<v-list-item
 						v-for="(item, i) in items"
@@ -236,8 +205,12 @@
 	}
 
 	.content {
-		padding-top: 12px;
+		padding-top: 25px;
 		height: 100%;
+	}
+
+	.row-fix {
+		padding-left: 12px;
 	}
 
 	.avatar {
@@ -263,6 +236,7 @@
 			color: #FFF;
 			font-size: 20px;
 			padding-right: 30px;
+			transition: all .1s;
 		}
 
 		&__likes {
@@ -307,6 +281,127 @@
 		&__text {
 			font-size: 14px;
 		}
+	}
+
+	.v-navigation-drawer--mini-variant {
+		.avatar__name {
+			opacity: 0;
+		}
+	}
+
+	.messages-header {
+		height: 40px;
+	}
+
+	.messages {
+		display: flex;
+		flex-direction: column;
+		padding: 0;
+		margin-bottom: -40px;
+
+		&__header {
+			position: sticky;
+			top: 65px;
+			height: 100px;
+			background-color: #303030;
+			padding-top: 35px;
+			z-index: 11;
+
+			&:after {
+				content: '';
+				display: block;
+				position: absolute;
+				top: -10px;
+				height: 10px;
+				right: 0;
+				left: 0;
+				background-color: #303030;
+			}
+		}
+
+		&__content {
+			background-color: #424242;
+			flex: 1;
+		}
+
+		&__input {
+			position: sticky;
+			bottom: 65px;
+			height: 80px;
+			background-color: #303030;
+			z-index: 11;
+			flex-shrink: 0;
+
+			&:after {
+				content: '';
+				display: block;
+				position: absolute;
+				top: 100%;
+				height: 40px;
+				right: 0;
+				left: 0;
+				background-color: #303030;
+			}
+		}
+
+		.v-textarea {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			left: 0;
+		}
+
+		.v-list-item__content {
+			border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+		}
+
+		.v-list-item:last-child {
+			.v-list-item__content {
+				border-bottom: 0;
+			}
+		}
+
+		.v-list-item:first-child {
+			.v-list-item__content {
+				border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+			}
+		}
+
+		.v-card {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		.v-toolbar {
+			flex: inherit;
+		}
+
+		.v-list {
+			overflow-y: auto;
+			flex: 1;
+			min-height: 0;
+			margin-bottom: 20px;
+		}
+
+		.v-input__slot {
+			margin-bottom: 0;
+		}
+
+		.v-text-field__details {
+			display: none;
+		}
+
+		.v-text-field__slot {
+			label {
+				left: 5px;
+			}
+		}
+	}
+
+	img {
+		max-width: 100%;
 	}
 
 	::-webkit-scrollbar {width: 12px;height: 12px;}

@@ -1,8 +1,8 @@
 <template>
-	<div>
-		<div class="settings pt-4">
+	<div class="content">
+		<div class="settings">
 			<div class="settings__section">
-				<div class="settings__title mb-6 headline">Change your avatar</div>
+				<div class="settings__title mb-6 title">Change your avatar</div>
 				<div class="setting-avatar">
 					<div class="setting-avatar__preview"
 					     :style="{backgroundImage: `url(${avatarPreview})`}"

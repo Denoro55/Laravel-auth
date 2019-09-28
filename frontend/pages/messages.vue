@@ -156,6 +156,7 @@
 <script>
 	import {mapMutations, mapState} from 'vuex';
 	export default {
+		middleware: 'auth',
 		async asyncData({ route, $axios, store }) {
 			const options = {
 				user_id: store.state.auth.user.id,

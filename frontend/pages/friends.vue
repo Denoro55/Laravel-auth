@@ -6,7 +6,7 @@
 				<v-btn @click="uploadRequests" :class="{primary: !friends}" class="ml-4">Friend requests</v-btn>
 			</div>
 			<div class="friends__list d-flex">
-				<template v-if="friends">
+				<template v-if="friends && friendList">
 					<div v-for="item in friendList" class="friends__item friend">
 						<v-card width="260">
 							<v-list-item class="py-3">
@@ -24,7 +24,7 @@
 								<v-btn :to="`user/${item.id}`" text color="blue lighten-1">
 									Read
 								</v-btn>
-								<v-btn text color="blue lighten-1">
+								<v-btn :to="`/messages?user=${item.id}`" text color="blue lighten-1">
 									Message
 								</v-btn>
 								<div class="flex-grow-1"></div>
@@ -36,7 +36,7 @@
 					<div v-for="(item, index) in friendRequests" class="friends__item friend">
 						<v-card width="260">
 							<v-list-item class="py-3">
-								<div class="friend__avatar mr-3" :style="{backgroundImage: `url(img/${item.image_url})`}">
+								<div class="friend__avatar mr-3" :style="{background: `url(img/${item.image_url})`}">
 								</div>
 								<v-list-item-content class="py-0">
 									<v-list-item-title class="subtitle-2">{{item.name}}</v-list-item-title>
@@ -68,15 +68,21 @@
 
 <script>
 	export default {
+		middleware: 'auth',
 		asyncData ({ $axios, store }) {
 			const options = {
 				user_id: store.state.auth.user.id
 			};
-			return $axios.post('user/friends', options)
-				.then((res) => {
-					let data = res.data;
-					return { friendList: data }
-				})
+			if (store.state.auth.user) {
+				return $axios.post('user/friends', options)
+					.then((res) => {
+						let data = res.data;
+						return { friendList: data }
+					})
+			}
+			return {
+				friendList: []
+			}
 		},
 		data() {
 			return {
@@ -108,6 +114,9 @@
 					this.friendList.push(friend);
 				}
 			}
+		},
+		created() {
+			console.log(this.$store)
 		}
 	}
 

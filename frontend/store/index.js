@@ -23,7 +23,10 @@ export const mutations = {
 		state.privateMessages = msg;
 	},
 	SOCKET_newMessage(state, msg) {
-		state.messages.push(msg);
+		state.messages.unshift(msg);
+		if (state.messages.length > 20) {
+			state.messages.pop();
+		}
 	},
 	SOCKET_updateUsers(state, users) {
 		state.users = users;

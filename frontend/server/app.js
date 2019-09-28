@@ -6,7 +6,34 @@ const privateUsers = require('./privateUsers')();
 
 const ROOM_PREFIX = 'R_';
 
-const m = (name, text, d_id, avatar) => ({name, text, d_id, avatar});
+const m = (name, text, d_id, image_url) => ({name, text, d_id, image_url});
+
+const generateGuestName = function(room, initial_name) {
+	let roomUsers = users.getByRoom(room);
+	let filteredUsers = roomUsers.filter(function(a) {
+		return a.name.includes('Guest');
+	});
+	let sortedGuests = filteredUsers.sort(function(a, b) {
+		let val1 = a.name.indexOf('#') !== -1 ? +a.name.substr(a.name.indexOf('#') + 1) : 1;
+		let val2 = b.name.indexOf('#') !== -1 ? +b.name.substr(b.name.indexOf('#') + 1) : 1;
+		return val1 - val2;
+	});
+	if (filteredUsers.length) {
+		for (let i = 0; i < filteredUsers.length + 1; i++) {
+			let compareName = 'Guest';
+			if (i > 0) {
+				compareName = `Guest #${i+1}`
+			}
+			if (i === filteredUsers.length) {
+				return `Guest #${i + 1}`;
+			} else if (sortedGuests[i].name !== compareName) {
+				return compareName;
+			}
+		}
+	} else {
+		return initial_name;
+	}
+};
 
 io.on('connection', socket => {
 
@@ -80,19 +107,27 @@ io.on('connection', socket => {
 		} else {
 			cb({id: socket.id});
 
-			socket.join(ROOM_PREFIX + data.room);
+			const ROOM = ROOM_PREFIX + data.room;
+
+			let user_name = data.name;
+			if (user_name === 'Guest') {
+				user_name = generateGuestName(ROOM, user_name);
+			}
+
+			socket.join(ROOM);
 
 			users.remove(socket.id);
 			users.add({
 				id: socket.id,
-				name: data.name,
-				room: ROOM_PREFIX + data.room
+				name: user_name,
+				room: ROOM,
+				image_url: data.image_url
 			});
 
-			io.to(ROOM_PREFIX + data.room).emit('updateUsers', users.getByRoom(data.room));
+			io.to(ROOM).emit('updateUsers', users.getByRoom(ROOM));
 
-			socket.emit('newMessage', m('admin', `Welcome to the chat, ${data.name}`));
-			socket.broadcast.to(ROOM_PREFIX + data.room).emit('newMessage', m('admin', `User ${data.name} has connected.`));
+			socket.emit('newMessage', m('admin', `Welcome to the chat, ${user_name}`));
+			socket.broadcast.to(ROOM).emit('newMessage', m('admin', `User ${user_name} has connected.`));
 
 			console.log('users: ',users);
 		}
@@ -107,7 +142,9 @@ io.on('connection', socket => {
 	});
 
 	socket.on('userLeft', (data, cb) => {
-		const user = users.remove(data.id);
+		const user = users.remove(data);
+		console.log('userLeft:', data);
+		console.log('userLeft user:', user);
 		if (user) {
 			io.to(user.room).emit('updateUsers', users.getByRoom(user.room));
 			io.to(user.room).emit('newMessage', m('admin', `User ${user.name} has disconnected.`));
